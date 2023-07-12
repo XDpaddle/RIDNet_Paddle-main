@@ -17,7 +17,6 @@ from utils.misc import get_time_str, make_exp_dirs, mkdir_and_rename
 from dataset import Dataset_GaussianDenoising
 from models.image_restoration_model import ImageCleanModel
 
-paddle.disable_signal_handler()
 
 def parse_options(is_train=True):
     parser = argparse.ArgumentParser()
@@ -82,7 +81,6 @@ def create_train_val_dataloader(opt, logger):
             num_iter_per_epoch = math.ceil(len(train_loader) * dataset_enlarge_ratio)
             total_iters = int(opt['train']['total_iter'])
             total_epochs = math.ceil(total_iters / (num_iter_per_epoch))
-            #total_epochs = 1
             if local_rank == 0:
                 logger.info(
                     'Training statistics:'
@@ -237,7 +235,7 @@ def main():
             model.save()
 
             # validation
-            val = True
+            val = False
             if val:
                 rgb2bgr = opt['val'].get('rgb2bgr', True)
                 # wheather use uint8 image to compute metrics
